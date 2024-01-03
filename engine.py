@@ -3,6 +3,8 @@ import pygame
 import speech_recognition
 from gtts import gTTS
 import speech_recognition as sr
+from google_config import Gemini
+
 
 class Engine :
 
@@ -81,13 +83,13 @@ class Engine :
             print('Done!')
 
     @staticmethod 
-    def compute_text(text):
+    def compute_text(mode, text):
         """
         _summary_: Compute text by Gemini API
         """
-        # Gemini api keys
-        api_keys = {}
-        return "GEMINI TEXT"
+        # generate text from GENINI
+        gemini_text = Gemini(mode, text)
+        return gemini_text
 
     @staticmethod 
     def exit_speech():
