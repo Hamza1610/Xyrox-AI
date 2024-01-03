@@ -11,16 +11,17 @@ REPLY = False
 GEN_TEXT = ''
 
 # The welcome speech method welcome user to the appilcation
+
 engine.welcome_speech()
 while START:
 
     # if LISTEN is True then call  record speech method and set LISTEN to False, REPLY TO True
     if LISTEN:
         #  # text generated from Speech recognition engine
-        SR_GEN = engine.listen_to_speech()
-        
+        # SR_GEN = engine.listen_to_speech()
+        SR_GEN = 'Hello how are you, are you in chat or generative'
         # text generated from gemini engine
-        GEMINI_GEN = engine.compute_text(SR_GEN)
+        GEMINI_GEN = engine.compute_text(mode='chat', text= SR_GEN)
 
         # State controller
         if GEMINI_GEN:
