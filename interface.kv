@@ -1,0 +1,53 @@
+<InterfaceLayout>:
+    orientation: 'vertical'
+    
+    RelativeLayout:
+        Image:
+            source: 'windows_background.webp'
+            allow_stretch: True
+            keep_ratio: False
+
+    GridLayout:
+        cols: 2
+
+        BoxLayout:
+
+            orientation: 'vertical'
+            size_hint: None, None
+            width: 20
+            opacity: 0.7 
+            background_color: 1, 1, 0, 1
+            Button:
+                text: 'Start Ai'
+                pos_hint: {'top': 0.5}
+                size_hint: None, None
+                size: 100, 45
+                on_press: root.on_button_press()
+            Button:
+                text: 'Generative' 
+                pos_hint: {'top': 0.8}
+                size_hint: None, None
+                size: 100, 45
+                on_press: root.on_button_press()
+            Button:
+                text: 'Chat'
+                color: 23, 255, 1, 10
+                pos_hint: {'top': 0.8}
+                size_hint: None, None
+                size: 100, 45
+                on_press: root.on_button_press()
+            Button:
+                text: 'Settings'
+                size_hint: None, None
+                size: 100, 45
+                on_press: root.on_button_press()
+
+        GridLayout:
+            rows: 2
+            width: 500
+            Label:
+                text: 'Welcome back!'
+                font_size: '60sp'
+
+<InterfaceApp>:
+    InterfaceLayout
