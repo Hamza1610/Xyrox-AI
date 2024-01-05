@@ -30,8 +30,8 @@ def Gemini(mode,text):
         # text generated from gemini
         response = model.generate_content(text)
         # format to markdown
-        response = response.text.replace('•', '  *')
-        return response
+        # response = response.text.replace('•', '  *')
+        return response.text
     elif mode == 'chat':
         # Later implement history in database
         response = chat.send_message(text)
