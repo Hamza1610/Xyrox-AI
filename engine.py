@@ -6,7 +6,7 @@ import speech_recognition as sr
 from google_config import Gemini
 
 
-class Engine :
+class Xyrox :
 
     """
     _summary_: AI engine for TTS and STT
@@ -49,8 +49,26 @@ class Engine :
         """
         _summary_: Method the listening to speech for reply, note: the listing code lies here
         """
-        return sr.Microphone(device_index = None)
- 
+        # Initialize the recognizer
+        recognizer = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Please speak something...")
+            # Adjust for ambient noise
+            recognizer.adjust_for_ambient_noise(source)
+            
+            # Listen to the user's voice
+            audio = recognizer.listen(source)
+            print("Recognition complete. Converting to text...")
+
+        try:
+            # Use Google Web Speech API for speech-to-text conversion
+            text = recognizer.recognize_google(audio)
+            print(text)
+            return text
+        except sr.UnknownValueError:
+            print("Sorry, could not understand audio.")
+        except sr.RequestError as e:
+            print("Error with the speech recognition service", e)
 
     @staticmethod 
     def make_speech(text):
@@ -60,7 +78,7 @@ class Engine :
         """
         try:
             # Create the text-to-speech object
-            tts = gTTS(text=text, lang='en')
+            tts = gTTS(text=text, lang='en', )
             # Create a buffer to hold the audio data
             audio_buffer = io.BytesIO()
             # Write the audio data to the buffer
@@ -77,11 +95,26 @@ class Engine :
             while pygame.mixer.music.get_busy():
                 pygame.time.Clock().tick(10)
             print('Speech generation done!')
+
+            
         except:
             print('Something went wrong: Please check your network')
         finally:
             print('Done!')
 
+    @staticmethod 
+    def iscommand(command):
+        """
+        _summary_: Checks local voice commands
+
+        Args:
+            command (str): text command
+        """
+        if command == 'off':
+            return True
+        else:
+            pass
+        
     @staticmethod 
     def compute_text(mode, text):
         """
