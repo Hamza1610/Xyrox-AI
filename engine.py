@@ -1,6 +1,5 @@
 import io
 import pygame
-import speech_recognition
 from gtts import gTTS
 import speech_recognition as sr
 from google_config import Gemini
@@ -78,7 +77,7 @@ class Xyrox :
         """
         try:
             # Create the text-to-speech object
-            tts = gTTS(text=text, lang='en', )
+            tts = gTTS(text=text, lang='en')
             # Create a buffer to hold the audio data
             audio_buffer = io.BytesIO()
             # Write the audio data to the buffer
