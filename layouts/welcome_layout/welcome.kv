@@ -1,0 +1,28 @@
+<WelcomeScreen>:
+    orientation: 'vertical'
+    
+    RelativeLayout:
+    
+        Image:
+            source: 'windows_background.webp'
+            allow_stretch: True
+            keep_ratio: False
+
+        BoxLayout:
+
+            orientation: 'vertical'
+            size_hint: None, None
+            width: 20
+            padding: -50
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            Label:
+                text: 'Welcome back!'
+                font_size: '80sp'
+
+            Button:
+                text: 'Get stated with Xyrox'
+                size_hint: None, None
+                size: 200, 45
+                background_color: .3, .4, .5, .9
+                pos_hint: {'center_x': 0.5}  # Center the button horizontally
+                on_press: root.on_press_start()
