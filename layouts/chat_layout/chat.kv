@@ -3,7 +3,7 @@
     
     RelativeLayout:
         Image:
-            source: 'windows_background.webp'
+            source: 'layouts\windows_background.webp'
             allow_stretch: True
             keep_ratio: False
 
@@ -23,7 +23,7 @@
                 pos_hint: {'top': 0.5}
                 size_hint: None, None
                 size: 100, 45
-                on_press: root.on_button_press()
+                on_press: root.on_start_ai()
             Button:
                 text: 'Generative' 
                 pos_hint: {'top': 0.8}
