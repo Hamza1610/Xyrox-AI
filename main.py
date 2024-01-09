@@ -1,65 +1,83 @@
 from engine import Xyrox
-
+from threading import Thread, Event
+from pygame_player import Player
 # Initializing engine class
 engine = Xyrox()
 
 
 class Xyrox_loop:
 
-    @staticmethod
-    def run():
-
+    def __init__(self):
         # Event variables
-        START = True
-        EXIT = False
-        LISTEN = True
-        REPLY = False
-        SR_GEN = ''
-        GEMINI_GEN = ''
+        self.START = True
+        self.EXIT = False
+        self.LISTEN = True
+        self.REPLY = False
+        self.SR_GEN = ''
+        self.GEMINI_GEN = ''
+        self.INTERRUPT = Event()
+        
+    def run(self):
 
-        engine.make_speech('Hello how are you doing today, how may I help you!')
+        engine.make_speech('Hello how are you doing today!, any thing for me')
+        self.START = True
         # Xyrox loop
-        while START:
-
+        while self.START:
             # if LISTEN is True then call  record speech method and set LISTEN to False, REPLY TO True
-            if LISTEN:
+            if self.LISTEN:
 
                 while True:
             
                     #  # text generated from Speech recognition engine
-                    SR_GEN = engine.listen_to_speech()
+                    self.SR_GEN = engine.listen_to_speech()
 
                     # Lenght of text genreated us 
-                    if SR_GEN:
-                        GEMINI_GEN = engine.compute_text(mode='chat',text=SR_GEN)
+                    if self.SR_GEN:
+
+                        # send SR_GEN to engine to give response
+                        self.GEMINI_GEN = engine.compute_text(mode='chat',text=self.SR_GEN)
+
+                        # Added SR_GEN and GEMINI_GEN to Chat hisotry
+
+                        self.CHAT = {
+                            'You': self.SR_GEN,
+                            'Xyrox': self.GEMINI_GEN
+                        }
+
+                        print(f'Chats: {self.CHAT}')
                         break
-                    # checks if SR_GEN is a local command
-                    # iscommand = engine.iscommand(SR_GEN)
-                
-                    #if iscommand == True:
-                    #EXIT = True
-                    #else:
-                    # text generated from gemini engine
-                    #GEMINI_GEN = engine.compute_text(mode='gen',text=SR_GEN)
 
                 # State controller
-                if GEMINI_GEN:
-                    LISTEN = False
-                    REPLY = True
+                if self.GEMINI_GEN:
+                    self.LISTEN = False
+                    self.REPLY = True
 
             # if REPLY is True then call  make speech method and set REPLY to False, LISTEN to True
-            if REPLY:
+            if self.REPLY:
+
+                # self.INTERRUPT.clear()
                 # calling engine method
-                engine.make_speech(GEMINI_GEN)
+                engine.make_speech(self.GEMINI_GEN)
 
                 # State controller     
-                REPLY = False
-                LISTEN = True
+                self.REPLY = False
+                self.LISTEN = True
 
-            # If Exit is True then Start is equals to False 
-            if EXIT:
 
-                engine.exit_speech()
+    def start(self):
+        Thread(target= self.run).start()
+        print('Xyrox loop started')
 
-                # State controller
-                START = False
+    def stop(self):
+        self.START = False
+        print('Xyrox lopp ended')
+    
+    def interrupt(self):
+        
+        Player.stop()
+        # self.INTERRUPT.set()
+        print('Xyrox voice interupted')
+
+    def apply(self):
+        print('Apply settings clicked!')
+        pass
