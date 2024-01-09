@@ -1,9 +1,13 @@
 import io
-import pygame
 from gtts import gTTS
 import speech_recognition as sr
 from google_config import Gemini
 
+from pygame_player import Player
+
+player = Player()
+
+CHAT_HISTORY = []
 
 class Xyrox :
 
@@ -11,6 +15,7 @@ class Xyrox :
     _summary_: AI engine for TTS and STT
 
     """
+
     @staticmethod 
     def welcome_speech():
 
@@ -26,15 +31,9 @@ class Xyrox :
             tts.write_to_fp(audio_buffer)
             # Rewind the buffer to the beginning
             audio_buffer.seek(0)
-            # Initialize Pygame mixer
-            pygame.mixer.init()
-            # Load the audio from the buffer
-            pygame.mixer.music.load(audio_buffer)
-            # Play the audio
-            pygame.mixer.music.play()
-            # Optional: Wait for the audio to finish playing
-            while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)
+
+            # play audio buffer
+            player.play(audio_buffer)
             print('Welcoming speech generate!')
         except:
             print('Something went wrong: Please check your network')
@@ -71,7 +70,6 @@ class Xyrox :
 
     @staticmethod 
     def make_speech(text):
-
         """
         _summary_: Method the make speech
         """
@@ -84,15 +82,8 @@ class Xyrox :
             tts.write_to_fp(audio_buffer)
             # Rewind the buffer to the beginning
             audio_buffer.seek(0)
-            # Initialize Pygame mixer
-            pygame.mixer.init()
-            # Load the audio from the buffer
-            pygame.mixer.music.load(audio_buffer)
-            # Play the audio
-            pygame.mixer.music.play()
-            # Optional: Wait for the audio to finish playing
-            while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)
+            # play audio buffer
+            player.play(audio_buffer)
             print('Speech generation done!')
 
             
@@ -122,6 +113,7 @@ class Xyrox :
         # generate text from GENINI
         gemini_text = Gemini(mode, text)
         return gemini_text
+    
 
     @staticmethod 
     def exit_speech():
@@ -138,17 +130,12 @@ class Xyrox :
             tts.write_to_fp(audio_buffer)
             # Rewind the buffer to the beginning
             audio_buffer.seek(0)
-            # Initialize Pygame mixer
-            pygame.mixer.init()
-            # Load the audio from the buffer
-            pygame.mixer.music.load(audio_buffer)
-            # Play the audio
-            pygame.mixer.music.play()
-            # Optional: Wait for the audio to finish playing
-            while pygame.mixer.music.get_busy():
-                pygame.time.Clock().tick(10)
+
+            # play audio buffer
+            player.play(audio_buffer)
             print('Exit processing..')
         except:
             print('Something went wrong: Please check your network')
         finally:
             print('Exit..')
+    
