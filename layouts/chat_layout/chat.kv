@@ -7,45 +7,47 @@
             allow_stretch: True
             keep_ratio: False
 
-    GridLayout:
-        cols: 2
+    BoxLayout:
+        orientation: 'horizontal'
 
         BoxLayout:
-
             orientation: 'vertical'
             size_hint: None, None
-            width: 20
+            width: 100
+            height: 200 
             pos_hint: {'top': 0.4}
             opacity: 0.7 
             background_color: 1, .2, .9, .5
             Button:
-                text: 'Start Ai'
+                text: 'Start'
                 pos_hint: {'top': 0.5}
                 size_hint: None, None
                 size: 100, 45
-                on_press: root.on_start_ai()
+                on_press: root.start()
             Button:
-                text: 'Generative' 
+                text: 'Stop' 
                 pos_hint: {'top': 0.8}
                 size_hint: None, None
                 size: 100, 45
-                on_press: root.on_button_press()
-            Button:
-                text: 'Chat'
-                pos_hint: {'top': 0.8}
-                size_hint: None, None
-                size: 100, 45
-                on_press: root.on_button_press()
+                on_press: root.stop()
             Button:
                 text: 'Settings'
+                pos_hint: {'top': 0.8}
                 size_hint: None, None
                 size: 100, 45
-                on_press: root.on_button_press()
+                on_press: root.apply()
+            Button:
+                text: 'Exit'
+                size_hint: None, None
+                size: 100, 45
+                on_press: root.close()
 
-        GridLayout:
-            rows: 2
-            width: 500
-            Label:
-                text: 'Welcome back!'
-                font_size: '60sp'
-
+        ScrollView:
+            width: root.width * 0.65  # 65% of the screen width
+            size_hint_y: 1.0  # Full height
+            TextInput:
+                id: chat_box
+                text: root.chats()
+                readonly: True
+                background_color: 1, .5, .9, .4
+                foreground_color: 1, 1, 1, 1
