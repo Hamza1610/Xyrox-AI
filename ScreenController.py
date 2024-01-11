@@ -2,7 +2,6 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.button import Button
 from kivy.core.window import Window
-
 from layouts.welcome_layout.welcome import WelcomeScreen
 from layouts.chat_layout.chat import ChatScreen
 
