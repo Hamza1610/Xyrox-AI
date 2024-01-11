@@ -35,7 +35,8 @@
                 pos_hint: {'top': 0.8}
                 size_hint: None, None
                 size: 100, 45
-                on_press: root.apply()
+                # on_press: root.apply()
+                on_press: root.show_children()
             Button:
                 text: 'Exit'
                 size_hint: None, None
@@ -44,10 +45,13 @@
 
         ScrollView:
             width: root.width * 0.65  # 65% of the screen width
+            height: root.height
             size_hint_y: 1.0  # Full height
-            TextInput:
+            height: 600 # Set the height to the minimum height of the content
+            bar_width: 50  # Adjust the width of the scroll bars
+            bar_color: 0, 0.7, 0.3, 1
+            BoxLayout:
                 id: chat_box
-                text: root.chats()
-                readonly: True
-                background_color: 1, .5, .9, .4
-                foreground_color: 1, 1, 1, 1
+                orientation: 'vertical'
+                size_hint: .5, None
+
