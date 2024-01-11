@@ -16,7 +16,7 @@ class Xyrox_loop:
         self.SR_GEN = ''
         self.GEMINI_GEN = ''
         self.INTERRUPT = Event()
-        
+
     def run(self):
 
         engine.make_speech('Hello how are you doing today!, any thing for me')
@@ -34,21 +34,17 @@ class Xyrox_loop:
                     # Lenght of text genreated us 
                     if self.SR_GEN:
 
+                        self.get_instant_chat('Me', self.SR_GEN)
                         # send SR_GEN to engine to give response
                         self.GEMINI_GEN = engine.compute_text(mode='chat',text=self.SR_GEN)
 
                         # Added SR_GEN and GEMINI_GEN to Chat hisotry
-
-                        self.CHAT = {
-                            'You': self.SR_GEN,
-                            'Xyrox': self.GEMINI_GEN
-                        }
-
-                        print(f'Chats: {self.CHAT}')
                         break
 
                 # State controller
                 if self.GEMINI_GEN:
+
+                    self.get_instant_chat('Xyrox', self.GEMINI_GEN)
                     self.LISTEN = False
                     self.REPLY = True
 
@@ -75,9 +71,10 @@ class Xyrox_loop:
     def interrupt(self):
         
         Player.stop()
-        # self.INTERRUPT.set()
         print('Xyrox voice interupted')
 
     def apply(self):
         print('Apply settings clicked!')
-        pass
+
+    def get_instant_chat(self, user, text):
+        return { user: text }
