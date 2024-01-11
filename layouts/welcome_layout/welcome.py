@@ -16,5 +16,5 @@ class WelcomeScreen(Screen, RelativeLayout):
 
     def on_press_start(self):
         self.manager.current = 'chat'
-        engine.welcome_speech()
+        # engine.welcome_speech()
         print("Button pressed!")
