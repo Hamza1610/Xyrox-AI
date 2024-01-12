@@ -35,8 +35,7 @@
                 pos_hint: {'top': 0.8}
                 size_hint: None, None
                 size: 100, 45
-                # on_press: root.apply()
-                on_press: root.show_children()
+                on_press: root.stop()
             Button:
                 text: 'Exit'
                 size_hint: None, None
@@ -54,4 +53,4 @@
                 id: chat_box
                 orientation: 'vertical'
                 size_hint: .5, None
-
+                on_parent: root.show_children()
