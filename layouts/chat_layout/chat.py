@@ -10,9 +10,11 @@ import sqlite3
 
 from main import Xyrox_loop
 from engine import Xyrox
+from db_wrapper import DB
 
 engine = Xyrox()
 loop = Xyrox_loop()
+wrapper = DB('chat_history')
 
 class ChatScreen(Screen, RelativeLayout):
     Builder.load_file('layouts/chat_layout/chat.kv')
@@ -21,52 +23,37 @@ class ChatScreen(Screen, RelativeLayout):
 
         super(ChatScreen, self).__init__(**kwargs)
 
-        # database
-        self.conn = sqlite3.connect('chat_history.db')
-        self.cursor = self.conn.cursor()
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Chats (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                User TEXT,
-                Text TEXT
-            )
-        ''')
+        wrapper.creat_table('Chats')
 
-        self.conn.commit()
             
     def start(self):
 
         loop.start()
-        chat = loop.get_instant_chat()
-        if chat.keys() == 'Me':
-            self.cursor.execute('INSERT INTO Chats (Users, Text) VALUES (?, ?)', ('Me', chat.values()))
-        elif chat.keys() == 'Xyrox':
 
-            self.cursor.execute('INSERT INTO Chats (Users, Text) VALUES (?, ?)', ('Xyrox', chat.values()))
-        else:
-            self.cursor.execute('INSERT INTO Chats (Users, Text) VALUES (?, ?)', ('Unknown', chat.values()))
     def stop(self):
 
         loop.interrupt()
         loop.stop()
 
     def show_children(self):
+
         self.chats()
-    
+
     def chats(self):
-        chats_from_db = self.cursor.fetchall()
+
+        last_ten_chats = wrapper.get_table_last_ten(table_name='Chats')
         try:
-            
-            print(chats_from_db)
-            for msg in chats_from_db:
+            print(last_ten_chats)
+            for msg in last_ten_chats:
                 new_text_input = TextInput(
-                    text= msg,
+                    text= str(msg),
+                    height = 350,
                     multiline=False,
                     background_color=(1, .5, .9, .4),
                     foreground_color=(1, 1, 1, 1),
                     border=(2, 2, 2, 2)
                 )
-            self.ids.chat_box.add_widget(new_text_input)
+                self.ids.chat_box.add_widget(new_text_input)
         except:
             new_text_input = TextInput(
                     text= 'Error loading message',
@@ -76,6 +63,7 @@ class ChatScreen(Screen, RelativeLayout):
                     border=(2, 2, 2, 2)
                 )
             self.ids.chat_box.add_widget(new_text_input)
+
     def apply(self):
         loop.apply()
 
