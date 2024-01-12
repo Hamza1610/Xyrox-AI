@@ -1,9 +1,12 @@
 from engine import Xyrox
 from threading import Thread, Event
 from pygame_player import Player
+import sqlite3
+from db_wrapper import DB
+
 # Initializing engine class
 engine = Xyrox()
-
+wrapper = DB('chat_history')
 
 class Xyrox_loop:
 
@@ -16,6 +19,7 @@ class Xyrox_loop:
         self.SR_GEN = ''
         self.GEMINI_GEN = ''
         self.INTERRUPT = Event()
+
 
     def run(self):
 
@@ -34,7 +38,7 @@ class Xyrox_loop:
                     # Lenght of text genreated us 
                     if self.SR_GEN:
 
-                        self.get_instant_chat('Me', self.SR_GEN)
+                        wrapper.insert({ 'Me': self.SR_GEN})
                         # send SR_GEN to engine to give response
                         self.GEMINI_GEN = engine.compute_text(mode='chat',text=self.SR_GEN)
 
@@ -44,7 +48,8 @@ class Xyrox_loop:
                 # State controller
                 if self.GEMINI_GEN:
 
-                    self.get_instant_chat('Xyrox', self.GEMINI_GEN)
+
+                    wrapper.insert({ 'Xyrox': self.GEMINI_GEN })
                     self.LISTEN = False
                     self.REPLY = True
 
@@ -75,6 +80,3 @@ class Xyrox_loop:
 
     def apply(self):
         print('Apply settings clicked!')
-
-    def get_instant_chat(self, user, text):
-        return { user: text }
